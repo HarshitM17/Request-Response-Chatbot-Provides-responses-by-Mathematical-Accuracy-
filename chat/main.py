@@ -54,8 +54,8 @@ class DOST:
 
         
         # self.response('Can you pleae provide a proper message',[''],required_words=[''])
-        self.response('This can happen because of merging of two profiles by claiming your sailor-mate booking.'+'\n'+'Thanks',
-                      ['sailor', 'seeing', 'another', 'sailor'], required_words=['sailor','seeing','another','sailor'])
+        self.response('This can happen because of merging of two profiles by claiming your user booking the issue will get resolved.'+'\n'+'Thanks',
+                      ['user', 'seeing', 'another', 'user'], required_words=['user','seeing','another','user'])
         # self.response("I'm sorry, but I don't have knowledge about that.", [], single_response=True)
          
 
@@ -78,6 +78,7 @@ class DOST:
 
         best_match = max(self.highest_prob_list, key=self.highest_prob_list.get)
         return best_match
+
 
     def get_responses(self, user_input):
         split_message = re.split(r'\s+|[,;?!.-]\s*', user_input.lower())
