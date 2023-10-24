@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOST Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #92ffca;
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            background-color: #6cb1fc;
+            color: rgb(255, 255, 255);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        #chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgb(218, 236, 245);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        
+        #chat-box {
+            overflow-y: scroll;
+            max-height: 300px;
+            min-height: 100px;
+            border-radius: 5px;
+            border: 1px solid rgb(55, 219, 14);
+            padding: 10px;
+        }
+        
+        input[type="text"] {
+            width: 80%;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid rgb(232, 158, 158);
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        
+        #send-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>DOST (Helpful Webpage and Helping Response Bot)</h1>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <input type="text" id="user-input" placeholder="Type your message...">
+        <button id="send-button">Send</button>
+    </div>
+    <script>
+        const chatBox = document.getElementById("chat-box");
+        const userInput = document.getElementById("user-input");
+        const sendButton = document.getElementById("send-button");
+    
+        sendButton.addEventListener("click", () => {
+            const userMessage = userInput.value.trim();
+            if (userMessage !== "") {
+                // Display user message in the chat box
+                chatBox.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+                
+                // Create a JSON object with the "question" field
+                const requestBody = { question: userMessage };
+    
+                // Send user message to the FastAPI endpoint
+                fetch("http://127.0.0.1:8000/ask", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(requestBody), // Send the JSON object
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Display bot response in the chat box
+                    chatBox.innerHTML += `<div><strong>DOST:</strong> ${data.response}</div>`;
+                })
+                .catch(error => console.error("Error:", error));
+    
+                // Clear the user input field
+                userInput.value = "";
+            }
+        });
+    </script>
+</body>
+</html>
